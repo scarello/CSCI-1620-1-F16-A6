@@ -27,6 +27,8 @@ import exceptions.InvalidCharacterException;
 import java.util.InputMismatchException;
 import dataStructures.ArrayList;
 
+
+
 public class EmployeeDriver {
     static Scanner in = new Scanner(System.in);
     public static int menu(String... options)
@@ -53,6 +55,12 @@ public class EmployeeDriver {
         int index;
         double amount;
         EmployeeManager em = new EmployeeManager(); //The EmployeManager object
+        if(em.loadEmployees("employees.ser", "request.dat"))
+        {
+            System.out.println("Employees Loaded");
+        }
+        else
+            System.out.println("Employees Not Loaded");
 
         //Main control loop, keep coming back to the
         //Main menu after each selection is finished
@@ -63,7 +71,7 @@ public class EmployeeDriver {
             //what is entered is a valid choice
             System.out.println("\n\nMain Menu\n");
             em.listAll();
-            mainInput = menu("Employee Submenu", "Add Employee", "Remove Employee", "Calculate Weekly Payout", "Calculate Bonus", "Annual Raises", "Reset Week", "Find Employee", "Sort", "View Vacation Requests", "Add Vacation Requests", "Grant Vacation Requests", "Quit");
+            mainInput = menu("Employee Submenu", "Add Employee", "Remove Employee", "Calculate Weekly Payout", "Calculate Bonus", "Annual Raises", "Reset Week", "Find Employee", "Sort", "View Vacation Requests", "Add Vacation Requests", "Grant Vacation Requests", "Employee Updates", "Quit");
             //Perform the correct action based upon Main menu input
             switch(mainInput)
             {
@@ -256,7 +264,7 @@ public class EmployeeDriver {
                 case 3:
 
                     System.out.print("Enter Employee Number to Remove: ");
-                    
+
 
                     en = 0;
                     flag = false;
@@ -308,7 +316,7 @@ public class EmployeeDriver {
                     ArrayList<Employee> ret = null;
                     try
                     {
-                        
+
                         ret = em.findAllBySubstring(substring);
                     }
                     catch(InvalidCharacterException ICE)
@@ -325,6 +333,7 @@ public class EmployeeDriver {
                     //Exit
                 case 9:
                     em.sort();
+                    break;
                 case 10:
                     em.outputRequests();
                     if(em.viewNextRequest() != null)
@@ -341,18 +350,36 @@ public class EmployeeDriver {
                 case 12:
                     if(em.viewNextRequest() != null)
                         System.out.println(em.grantNextRequest().toString() + "\n" + "granted vacation request");
-                    
+
 
                     break;
-                
+
                 case 13:
+                    System.out.println("Enter name of update file: ");
+                    if(em.processUpdates(in.next()))
+                    {
+                        System.out.println("Updates processed successful");
+                    }
+                    else
+                        System.out.println("Updates not processed");
+                    break;
+                case 14:
+
                     System.out.println("\nThank you for using the Employee Manager!\n");
+                    if(em.saveEmployees("employees.ser", "requests.dat"))
+                    {
+                        System.out.println("Employees Stored");
+                    }
+                    else
+                        System.out.println("Employees Not Stored");
 
-
+                    break;
             }
-            
-        }while(mainInput != 13);
+
+        }while(mainInput != 14);
     }
 
 }
+
+
 

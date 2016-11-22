@@ -31,6 +31,15 @@ import dataStructures.ArrayList;
 import dataStructures.LinkedList;
 import dataStructures.Queue;
 import dataStructures.ListNode;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Formatter;
 
 
 public class EmployeeManager {
@@ -57,9 +66,9 @@ public class EmployeeManager {
 
         try
         {
-            
+
             employees = new ArrayList<>(3);
-            
+
         }
         catch(InvalidSizeException E)
         {
@@ -103,7 +112,7 @@ public class EmployeeManager {
                 {
                     System.out.println("At maximum capacity cannot add the employee");
                 }
-                    hourlyList.insertAtBack(he);
+                hourlyList.insertAtBack(he);
                 break;
             case 3:
                 CommissionEmployee ce = new CommissionEmployee(fn, ln, m, g, en, ft, amount);
@@ -114,7 +123,7 @@ public class EmployeeManager {
                 {
                     System.out.println("At maximum capacity cannot add the employee");
                 }
-                    commissionList.insertAtBack(ce);
+                commissionList.insertAtBack(ce);
                 break;
             case 2:
                 SalaryEmployee se = new SalaryEmployee(fn, ln, m, g, en, ft, amount);
@@ -126,7 +135,7 @@ public class EmployeeManager {
                 {
                     System.out.println("At maximum capacity cannot add the employee");
                 }
-                    salaryList.insertAtBack(se);
+                salaryList.insertAtBack(se);
                 break;
             default:
                 System.out.println("Invalid Employee Type, None Added");
@@ -148,13 +157,13 @@ public class EmployeeManager {
         }
         else
         {
-        Employee temp = employees.removeItem(index);
-        if(temp instanceof HourlyEmployee)
-            hourlyList.findAndRemove(temp);
-        else if( temp instanceof SalaryEmployee)
-            salaryList.findAndRemove(temp);
-        else
-            commissionList.findAndRemove(temp);
+            Employee temp = employees.removeItem(index);
+            if(temp instanceof HourlyEmployee)
+                hourlyList.findAndRemove(temp);
+            else if( temp instanceof SalaryEmployee)
+                salaryList.findAndRemove(temp);
+            else
+                commissionList.findAndRemove(temp);
         }
     }
 
@@ -183,7 +192,7 @@ public class EmployeeManager {
     //Return Value(s) :None
     //Partners        :None
     //Description     :Lists all the current HourlyEmployees. Outputs there are none if there are none.
-    
+
     public void listHourly()
     {
         if (hourlyList.lengthIs() == 0)
@@ -194,11 +203,11 @@ public class EmployeeManager {
         {
             for(int i = 0; i < hourlyList.lengthIs(); i++)
             {
-                    System.out.println(hourlyList.getItem(i).toString());
+                System.out.println(hourlyList.getItem(i).toString());
             }
         }
     }
-        
+
 
     //Method Name     :listSalary
     //Parameters      :None
@@ -215,11 +224,11 @@ public class EmployeeManager {
         else
         {
             for(int i = 0; i < salaryList.lengthIs(); i++){
-                    System.out.println(salaryList.getItem(i).toString());
-                }
+                System.out.println(salaryList.getItem(i).toString());
+            }
         }
     }   
-    
+
 
 
     //Method Name     :listCommission
@@ -241,11 +250,11 @@ public class EmployeeManager {
         {
             for(int i = 0; i < commissionList.lengthIs(); i++)
             {
-                    System.out.println(commissionList.getItem(i).toString());
+                System.out.println(commissionList.getItem(i).toString());
             }
 
         }
-        
+
     }
 
     //Method Name     :resetWeek
@@ -346,14 +355,14 @@ public class EmployeeManager {
 
     public void increaseSales(int index, double amount){
 
-       Employee employee = employees.getItem(index);
-       if(employee instanceof CommissionEmployee)
-       {
-        CommissionEmployee Employee = (CommissionEmployee)employee;
-        Employee.increaseSales(amount);
-       }
-       else
-           System.out.println("\nThis is not a Commission Employee!\n");
+        Employee employee = employees.getItem(index);
+        if(employee instanceof CommissionEmployee)
+        {
+            CommissionEmployee Employee = (CommissionEmployee)employee;
+            Employee.increaseSales(amount);
+        }
+        else
+            System.out.println("\nThis is not a Commission Employee!\n");
     }
 
     //Method Name     :findAllBySubstring
@@ -371,7 +380,7 @@ public class EmployeeManager {
     {
         String name;
         ArrayList<Employee> ea = new ArrayList<>();
-        
+
 
         for(int i = 0 ; i < employees.lengthIs();i++)
         {
@@ -405,7 +414,7 @@ public class EmployeeManager {
     private int charNumericValue(char c) throws InvalidCharacterException
     {        
         //int val = Character.toUpper(c) - 65;
-	switch( c )
+        switch( c )
         {
             case 'a': 
             case 'A':
@@ -579,11 +588,11 @@ public class EmployeeManager {
         return linearSearchRecursive(nameHashes, findhash, nameHashes.length);
     }
 
-     //Method Name     :Sort
-     //Parameters      :None
-     //Return Value(s) :none
-     //Partners        :none
-     //Description     :Simply calls upon the ArrayLists sort() method.
+    //Method Name     :Sort
+    //Parameters      :None
+    //Return Value(s) :none
+    //Partners        :none
+    //Description     :Simply calls upon the ArrayLists sort() method.
 
     public void sort()
     {
@@ -592,7 +601,7 @@ public class EmployeeManager {
         salaryList.sort();
         commissionList.sort();
     }
-    
+
     //Method Name     :addRequest
     //Parameters      :empNum:int
     //Return Value(s) :boolean
@@ -610,9 +619,9 @@ public class EmployeeManager {
         }
         else
             return false;
-    
+
     }
-    
+
     //Method Name     :viewNextRequest
     //Parameters      :None
     //Return Value(s) :Employee
@@ -647,7 +656,7 @@ public class EmployeeManager {
     //Partners        :None
     //Description     :If requests are present outputs all of the Employees in the Queue. 
     //                  If there are no requests outputs, No vacation requests.
-    
+
     public void outputRequests()
     {
         if(vacationRequests.isEmpty())
@@ -657,24 +666,177 @@ public class EmployeeManager {
 
     }
 
-    public boolean loadEmployees(string employeeFile, String requestFile)
+    public boolean loadEmployees(String employeeFile, String requestFile)
     {
+        ObjectInputStream input;
+        Scanner input2;
+        employees.clear();
+        salaryList.clear();
+        hourlyList.clear();
+        commissionList.clear();
+        vacationRequests.clear();
+        boolean error = false, flag = true;
+        //Can one file open correctly and the other not? If so how do we handle that? 
 
-        return false;
+        try
+        {
+            input = new ObjectInputStream(new FileInputStream(employeeFile));
+            input2 = new Scanner(new File(requestFile));
+        }
+        catch(IOException IOE)
+        {
+            System.err.println("Error Opening file.");
+            return false;
+        }
+        while(flag)
+        {
+            try{
+                Employee record = (Employee)input.readObject();
+
+                try{
+                    employees.addItem(record);
+                }catch(MaximumCapacityException MCE)
+                {
+                    System.out.print("Maximum Capacity Reached");
+                    flag = false;
+                }
+                if (record instanceof HourlyEmployee)
+                {
+                    hourlyList.insertAtBack(record);
+                }
+                else if (record instanceof SalaryEmployee)
+                {
+                    salaryList.insertAtBack(record);
+                }
+                else
+                    commissionList.insertAtBack(record);
+            }
+            catch(EOFException EOFE)
+            {
+                try{
+                    input.close();
+                    input2.close();
+                }
+                catch(IOException ex)
+                {
+                    System.err.println("Error closing file");
+                }
+                flag = false;
+            }
+            catch(ClassNotFoundException | IOException CNFE)
+            {
+                try{
+                    input.close();
+                    input2.close();
+                }
+                catch(IOException ex)
+                {
+                    System.err.println("Error closing file");
+                }
+                error = true;
+                flag = false;
+            }
+
+
+            //What happens if we encounter an error in loading the employees do we still load requests or do we just return?
+        }
+        while(input2.hasNextInt())
+        {    
+            addRequest(input2.nextInt());
+        }
+        return !error;
     }
-    
+    //what could cause a return false? or return true?
+
+
     public boolean saveEmployees(String employeeFile, String requestFile)
     {
-    
-        return false;
+        ObjectOutputStream output;
+        Formatter output2;
+        boolean error = false, flag = true;
+        try
+        {
+            output = new ObjectOutputStream(new FileOutputStream(employeeFile));
+            output2 = new Formatter(requestFile);
+        }
+        catch(IOException IOE)
+        {
+            System.err.println("Error opening file.");
+            return false;
+        }
+        for(int i = 0; i < employees.lengthIs(); i ++)
+        {
+            try{
+                output.writeObject(employees.getItem(i));
+            }
+            catch(IOException IOE)
+            {
+                error = true;
+                try{
+                    output.close();
+                }catch(IOException ex)
+                {
+                    System.err.println("Error closing file");
+                }
+                break;
+            }
+        }
+        try{
+            output.close();
+
+        }catch(IOException ex)
+        {
+            System.err.println("Error closing file");
+        }
+
+        while(vacationRequests.isEmpty()){
+            Employee employeeTmp = vacationRequests.dequeue();
+            int empNum = employeeTmp.getEmployeeNumber();
+            output2.format("%i", empNum);
+        }
+        output2.close();
+
+        return !error;
     }
+
 
     public boolean processUpdates( String fileName )
     {
-        
-        return false;
+        Scanner input;
+        try
+        {
+            input = new Scanner(new File(fileName));
+        }
+        catch(FileNotFoundException ex){
+            System.err.println("File not found.");
+            return false;
+        }
+        while(input.hasNext())
+        {
+            if(input.hasNextInt())
+            {
+                int empNum = input.nextInt();
+                double amount = input.nextDouble();
+                if( amount > 0 ){
+                    int index = getIndex(empNum);
+                    if( index != -1 )
+                    {
+                        if(employees.getItem(index) instanceof HourlyEmployee){
+                            increaseHours(index, amount);
+                        }
+                        else if(employees.getItem(index) instanceof CommissionEmployee)
+                        {
+                            increaseSales(index, amount);
+                        }
+                    }
+                }
+            }
+
+        }  
+        input.close();
+        return true;
     }
-    
+
 
 
 
