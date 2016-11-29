@@ -1,7 +1,7 @@
 // Name     : Michael Monical
 // Class    : 1620-001
-// Program #    : 5 
-// Due Date     : Nov. 17, 2016 
+// Program #    : 6 
+// Due Date     : Nov. 29, 2016 
 //
 // Honor Pledge:  On my honor as a student of the University
 //                of Nebraska at Omaha, I have neither given nor received
@@ -33,15 +33,23 @@ public class EmployeeDriver {
     static Scanner in = new Scanner(System.in);
     public static int menu(String... options)
     {
-        int choice;
+        int choice = -1;
         for(int line = 0; line < options.length; line++)
             System.out.printf("%d. %s\n", line+1,options[line]);
 
         do
         {
             System.out.print("Enter Choice: ");
+            
+            try{
             choice = in.nextInt();
-        }while(!(choice > 0 && choice <= options.length));
+            }catch(InputMismatchException IME)
+            {
+                System.err.println("That is not a number");
+                in.next();
+            }
+                
+            }while(!(choice > 0 && choice <= options.length));
 
         return choice;
     }
@@ -55,7 +63,7 @@ public class EmployeeDriver {
         int index;
         double amount;
         EmployeeManager em = new EmployeeManager(); //The EmployeManager object
-        if(em.loadEmployees("employees.ser", "request.dat"))
+        if(em.loadEmployees("employees.ser", "requests.dat"))
         {
             System.out.println("Employees Loaded");
         }

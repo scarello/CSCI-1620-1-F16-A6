@@ -1,7 +1,7 @@
 // Name     : Michael Monical
 // Class    : 1620-001
-// Program #    : 5
-// Due Date     : Nov. 17, 2016
+// Program #    : 6
+// Due Date     : Nov. 29, 2016
 //
 // Honor Pledge:  On my honor as a student of the University
 //                of Nebraska at Omaha, I have neither given nor received
@@ -665,6 +665,16 @@ public class EmployeeManager {
             System.out.println(vacationRequests.toString());
 
     }
+    //Method Name     :loadEmployees
+    //Parameters      :employeeFile:String, requestFile:String
+    //Return Value(s) :boolean true or false
+    //Partners        :None
+    //Description     :Given the name of a serialized file (employeeFile), this method attempts to read in Employees from a previous session. 
+    //This method will return true if the load of Employees was successful and false if it was not successful (file doesn’t exist, 
+    //ClassNotFoundException, or other IOException). Before reading in the Employees it will clear all of the lists to ensure it 
+    //is loading into an empty set of Employees. This includes the ArrayList, the LinkedLists, and the Queue. 
+    //If a MaximumCapacityException is encountered while adding Employees output “Maximum Capacity Reached”, and return true. 
+    //The method will also open the text file (requestFile) to rebuild the vacation request Queue.
 
     public boolean loadEmployees(String employeeFile, String requestFile)
     {
@@ -678,14 +688,15 @@ public class EmployeeManager {
         boolean error = false, flag = true;
         //Can one file open correctly and the other not? If so how do we handle that? 
 
+        
         try
         {
             input = new ObjectInputStream(new FileInputStream(employeeFile));
-            input2 = new Scanner(new File(requestFile));
         }
         catch(IOException IOE)
         {
-            System.err.println("Error Opening file.");
+            System.err.println("Error Opening Employee File.");
+            //System.out.println(IOE.toString());
             return false;
         }
         while(flag)
@@ -715,7 +726,6 @@ public class EmployeeManager {
             {
                 try{
                     input.close();
-                    input2.close();
                 }
                 catch(IOException ex)
                 {
@@ -727,7 +737,6 @@ public class EmployeeManager {
             {
                 try{
                     input.close();
-                    input2.close();
                 }
                 catch(IOException ex)
                 {
@@ -736,17 +745,39 @@ public class EmployeeManager {
                 error = true;
                 flag = false;
             }
-
+            
 
             //What happens if we encounter an error in loading the employees do we still load requests or do we just return?
         }
+        try
+        {
+            input2 = new Scanner(new File(requestFile));
+        }
+        catch(IOException IOE)
+        {
+            System.err.println("Error opening Request File");
+            return false; 
+        }
+        
         while(input2.hasNextInt())
         {    
             addRequest(input2.nextInt());
         }
+            input2.close();
+        
+        //System.out.println(error);    
         return !error;
     }
     //what could cause a return false? or return true?
+    
+    //Method Name     :saveEmployees
+    //Parameters      :employeeFile:String, requestFile:String
+    //Return Value(s) :boolean true or false
+    //Partners        :None
+    //Description     :This method will store all of the Employees as Serialized objects in the employeeFile and the 
+    //          Employee numbers in the correct order of those in the vacation Queue as plain text, 
+    //          placing a new line after every number.
+                
 
 
     public boolean saveEmployees(String employeeFile, String requestFile)
@@ -789,15 +820,23 @@ public class EmployeeManager {
             System.err.println("Error closing file");
         }
 
-        while(vacationRequests.isEmpty()){
+        while(!vacationRequests.isEmpty()){
             Employee employeeTmp = vacationRequests.dequeue();
             int empNum = employeeTmp.getEmployeeNumber();
-            output2.format("%i", empNum);
+            output2.format("%d", empNum);
         }
         output2.close();
 
         return !error;
     }
+    
+    //Method Name     :processUpdates
+    //Parameters      :fileName:String
+    //Return Value(s) :boolean true or false
+    //Partners        :None
+    //Description     :Given the name of a text file it will attempt to read in the values. Employee numbers being ints
+    //                and doubles for the amount for the changes being made to the employee. If they are either negative or int he wrong order
+    //               it will skip that set and try to find the next set of numbers.
 
 
     public boolean processUpdates( String fileName )
@@ -830,6 +869,11 @@ public class EmployeeManager {
                         }
                     }
                 }
+            }
+            else
+            {
+                input.next();
+                input.next();
             }
 
         }  
